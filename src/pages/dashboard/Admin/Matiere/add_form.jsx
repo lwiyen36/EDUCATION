@@ -13,23 +13,22 @@ import {
   Typography ,
   Textarea,
 } from "@material-tailwind/react";
-import { AjouterSpecialite } from "../Admin.service";
+import { AjouterMatiere } from "../Admin.service";
 
 export function AddForm(props) {
-    let [nom_sp , setNom] = useState("") ;
-    let [description , setDescrip] = useState("") ;
-    let[duree , setDuree] = useState("") ;
+    let [nom_mt , setNom] = useState("") ;
+    let [coefficient , setC] = useState("") ;
     let [errors , setErr] = useState({error1 : '' , error2 : ''}) ;
 
     const validation = () => {
       let validate = true;
       const newErrors = { error1: '', error2: '' };
-      if (!nom_sp) {
-          newErrors.error1 = "Le champ nom de la spécialité est obligatoire";
+      if (!nom_mt) {
+          newErrors.error1 = "Le champ nom de la matère est obligatoire";
           validate = false;
       }
-      if (!duree) {
-          newErrors.error2 = "Le champ durée d'étude est obligatoire";
+      if (!coefficient) {
+          newErrors.error2 = "Le champ coefficient d'étude est obligatoire";
           validate = false;
       }
       setErr(newErrors);
@@ -42,16 +41,15 @@ export function AddForm(props) {
            let confirmer = confirmation();
             if (confirmer) {
                 try {
-                    const specialite = { nom_specialite: nom_sp, description: description, duree_etude: duree };
-                    AjouterSpecialite(specialite).then(() =>  {swal("Bravo", "Spécialité ajoutée avec succès.", { icon: "success" })} ).catch(() =>  {swal("Erreur", "Une erreur s'est produite lors de l'ajout de la spécialité.", { icon: "error" })}) ;
-                    props.setAdd(specialite)
+                    const matiere = {nom_matiere: nom_mt, Coefficient : coefficient};
+                    AjouterMatiere(matiere).then(() =>  {swal("Bravo", "Matière ajoutée avec succès.", { icon: "success" })} ).catch(() =>  {swal("Erreur", "Une erreur s'est produite lors de l'ajout de la matière.", { icon: "error" })}) ;
+                    props.setAdd(matiere)
                     setNom('');
-                    setDescrip('');
-                    setDuree('');
+                    setC('');
                     props.setAdd(response);
                     props.handleOpen();
                 } catch (error) {
-                    console.error("Une erreur s'est produite lors de l'ajout de la spécialité :", error);
+                    console.error("Une erreur s'est produite lors de l'ajout de la matière :", error);
 
                 }
             } 
@@ -88,17 +86,16 @@ export function AddForm(props) {
       </div>
       <DialogBody>
         <Typography className="mb-10 -mt-7 " color="gray" variant="lead">
-          Entrer les informations qui concerne la specialité.
+          Entrer les informations qui concerne la matière.
         </Typography>
         <div className="grid gap-6">
           <Typography className="-mb-1" color="blue-gray" variant="h6">
             Informations.
           </Typography>
-          <Input label="Nom de la spécialité" onInput={(e) => setNom(e.target.value)} />
+          <Input label="Nom de la matière" onInput={(e) => setNom(e.target.value)} />
           {errors.error1 && <Typography className="mx-2 font-bold text-red-600 text-xs" >{errors.error1}</Typography>}
-          <Input label="Durée d'étude" type="number" onInput={(e) => setDuree(e.target.value)} />
+          <Input label="Coefficient" type="number" onInput={(e) => setC(e.target.value)} />
           {errors.error2 && <Typography className="mx-2 font-bold text-red-600 text-xs" >{errors.error2}</Typography>}
-          <Textarea label="Description (optionnel)" onInput={(e) => setDescrip(e.target.value)} />
         </div>
       </DialogBody>
       <DialogFooter className="space-x-2">

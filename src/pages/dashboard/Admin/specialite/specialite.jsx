@@ -4,28 +4,74 @@ import {
     CardBody,
     Typography,
     Button,
-
+    Chip
   } from "@material-tailwind/react";
   import { useState, useEffect } from "react";
-  import { getSpecialite } from "../Admin.service";
+  import { getSpecialites , getSpecialite, deleteSpecialite } from "../Admin.service";
 import { AddForm } from "./add_form";
+import { UpdateForm } from "./update_form";
+import swal from 'sweetalert'
+import { confirmation } from "@/widgets/alert_confirmation";
 
   export function Specialite() {
     let [data, setData] = useState([]);
     const [open, setOpen] = useState(false);
-    let [Add , setAdd] = useState([]);
+    const [open2 , setOpen2] = useState(false)
+    let [specialite , setS] = useState({});
+    const [add , setAdd] = useState({}) ; 
+    const [update , setUpdate] = useState({}) ; 
+    const  [del , setDel] = useState({}) ; 
 
-    useEffect(() => {
-      getSpecialite().then((data) => {
+    const getData = () => {
+        getSpecialites().then((data) => {
         setData(data.data.specialites);
       });
-    }, [open]);
+    }
+
+    useEffect(() => {
+        getData(); 
+    }, [add , del , update]);
 
 
   const handleOpen = () => {
     setOpen(!open) ;
 
 }
+
+const removeSpecialite = async (id) => {
+  const confirmer = await confirmation();
+  if (confirmer) {
+    try {
+      await deleteSpecialite(id);
+      setDel(id)
+      swal("Bravo", "Spécialité supprimée avec succès.", { icon: "success" });
+    } catch (error) {
+      swal("Erreur", "Une erreur s'est produite lors de la suppression de la spécialité.", { icon: "error" });
+    }
+  }
+}
+
+
+
+
+
+
+const handleOpen2 = async (id) => {
+  
+  try {
+      setOpen2(!open2);
+      if(!open2){
+        const response = await getSpecialite(id);
+        setS(response.data.specialite);
+      }
+  } catch (error) {
+      console.error("Une erreur s'est produite lors de la récupération de la spécialité :", error);
+      swal("Erreur", "Une erreur s'est produite lors de la modification de la spécialité.", { icon: "error" });
+  }
+}
+
+   
+
 
     return (
       <div className="mt-12 mb-8 flex flex-col gap-12">
@@ -95,12 +141,20 @@ import { AddForm } from "./add_form";
 
                       </td>
 
-                         <td className={className}>
-                         <Typography as="a" href="#" className=" text-center text-xs font-semibold text-blue-gray-600">
-                         {sp.description}
-                         </Typography>
-
-                         </td>
+                      <td className={`py-3 px-5 ${key === data.length - 1 ? "" : "border-b border-blue-gray-50"}`}>
+                      {
+                      sp.description ? <Typography as="a" href="#" className="text-xs font-semibold text-blue-gray-600 text-center">
+                     
+                             {sp.description }
+                        </Typography> :   <Chip
+                        variant="gradient"
+                        color="red"
+                        value="aucun description"
+                        className="py-0.5 px-2 text-[11px] font-medium w-fit"
+                      />
+                      }
+                      
+                    </td>
                       <td className={className}>
                         <Typography
                           as="a"
@@ -113,13 +167,13 @@ import { AddForm } from "./add_form";
 
                       <td className={className}>
                       <div className="flex items-center justify-center gap-3">
-                        <Button  ripple= {true} variant="text">
+                        <Button  ripple= {true} variant="text" onClick={() => handleOpen2(sp.id)}>
                           <svg className="w-6 h-6 text-green-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                             <path fill-rule="evenodd" d="M14 4.182A4.136 4.136 0 0 1 16.9 3c1.087 0 2.13.425 2.899 1.182A4.01 4.01 0 0 1 21 7.037c0 1.068-.43 2.092-1.194 2.849L18.5 11.214l-5.8-5.71 1.287-1.31.012-.012Zm-2.717 2.763L6.186 12.13l2.175 2.141 5.063-5.218-2.141-2.108Zm-6.25 6.886-1.98 5.849a.992.992 0 0 0 .245 1.026 1.03 1.03 0 0 0 1.043.242L10.282 19l-5.25-5.168Zm6.954 4.01 5.096-5.186-2.218-2.183-5.063 5.218 2.185 2.15Z" clip-rule="evenodd"/>
                           </svg>
                         </Button>
 
-                        <Button ripple= {true} variant="text">
+                        <Button ripple= {true} variant="text" onClick={() => removeSpecialite(sp.id)}>
                           <svg className="w-6 h-6 text-red-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                             <path fill-rule="evenodd" d="M8.586 2.586A2 2 0 0 1 10 2h4a2 2 0 0 1 2 2v2h3a1 1 0 1 1 0 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V8a1 1 0 0 1 0-2h3V4a2 2 0 0 1 .586-1.414ZM10 6h4V4h-4v2Zm1 4a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Zm4 0a1 1 0 1 0-2 0v8a1 1 0 1 0 2 0v-8Z" clip-rule="evenodd"/>
                           </svg>
@@ -135,7 +189,8 @@ import { AddForm } from "./add_form";
             </table>
           </CardBody>
         </Card>
-        <AddForm open={open} handleOpen={handleOpen} setAdd={setAdd} />
+        <AddForm open={open} handleOpen={handleOpen} setAdd={setAdd}  />
+        <UpdateForm open={open2} handleOpen={handleOpen2} setUpdate={setUpdate}  specialite={specialite}/>
       </div>
     );
   }

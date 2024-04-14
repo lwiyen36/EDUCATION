@@ -8,6 +8,10 @@ import {
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
 import { Specialite } from "./pages/dashboard/Admin/specialite/specialite";
+import { Groupe } from "./pages/dashboard/Admin/Group/groupes";
+import { Etudiants } from "./pages/dashboard/Admin/etudiant/etudiants";
+import { Matieres } from "./pages/dashboard/Admin/Matiere/matieres";
+import { Formateurs } from "./pages/dashboard/Admin/formateur/formateur";
 
 
 
@@ -39,14 +43,22 @@ export const routes = [
         icon: <TableCellsIcon {...icon} />,
         name: "Groupes",
         path: "/groupes",
-        element: <Tables />,
+        element: <Groupe />,
         role : 'admin' ,
       },
       {
         icon: <TableCellsIcon {...icon} />,
         name: "Etudiants",
         path: "/etudiants",
-        element: <Tables />,
+        element: <Etudiants />,
+        role : 'admin' ,
+      },
+
+      {
+        icon: <TableCellsIcon {...icon} />,
+        name: "Matieres",
+        path: "/matieres",
+        element: <Matieres />,
         role : 'admin' ,
       },
 
@@ -54,16 +66,10 @@ export const routes = [
         icon: <TableCellsIcon {...icon} />,
         name: "Formateurs",
         path: "/formateurs",
-        element: <Tables />,
+        element: <Formateurs />,
         role : 'admin' ,
       },
-      {
-        icon: <TableCellsIcon {...icon} />,
-        name: "Matieres",
-        path: "/matieres",
-        element: <Tables />,
-        role : 'admin' ,
-      },
+      
 
       {
         icon: <TableCellsIcon {...icon} />,
@@ -85,7 +91,7 @@ export const routes = [
         name: "Emplois du temps",
         path: "/emploisTemps",
         element: <Tables />,
-        role : 1 ,
+        role : 'admin' ,
       },
 
     ],

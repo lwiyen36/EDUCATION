@@ -22,9 +22,14 @@ export function Sidenav({ brandImg, brandName, routes }) {
   const [Role,setrole]=useState('')
   useEffect(()=>{
     var id=JSON.parse(localStorage.getItem('user'))
-    GetRole(id.id_role).then((res)=>{
+    if(id !== null) {
+          GetRole(id.id_role).then((res)=>{
       setrole(res.data.role)
-    }).catch((err)=>console.log(err))
+    }).catch((err)=>document.location = '/auth/sign-in')
+    }else{
+       document.location='/auth/sign-in' 
+    }
+  
   },[])
 
   return (
@@ -41,7 +46,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
             variant="h6"
             color={sidenavType === "dark" ? "white" : "blue-gray"}
           >
-            {brandName}
+             Gestion d'établissement
           </Typography>
         </Link>
 
