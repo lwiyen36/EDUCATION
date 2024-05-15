@@ -12,6 +12,8 @@ import { Groupe } from "./pages/dashboard/Admin/Group/groupes";
 import { Etudiants } from "./pages/dashboard/Admin/etudiant/etudiants";
 import { Matieres } from "./pages/dashboard/Admin/Matiere/matieres";
 import { Formateurs } from "./pages/dashboard/Admin/formateur/formateur";
+import Absence from "./pages/dashboard/Admin/absence/Absence";
+import ListEtu from "./pages/dashboard/formateur/ListEtu";
 
 
 
@@ -76,14 +78,14 @@ export const routes = [
         name: "Resultats",
         path: "/resultats",
         element: <Tables />,
-        role : 'formateur' ,
+        role : 'etudiant' ,
       },
 
       {
         icon: <TableCellsIcon {...icon} />,
         name: "Absences",
         path: "/absences",
-        element: <Tables />,
+        element: <Absence />,
         role : 'admin' ,
       },
       {
@@ -92,6 +94,13 @@ export const routes = [
         path: "/emploisTemps",
         element: <Tables />,
         role : 'admin' ,
+      },
+      {
+        icon: <TableCellsIcon {...icon} />,
+        name: "List Des Etudiants",
+        path: "/listDesEtudiants",
+        element: <ListEtu />,
+        role : 'formateur' ,
       },
 
     ],

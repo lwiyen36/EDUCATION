@@ -99,4 +99,9 @@ export const getFormateurs = () => {
 export const PrepareFormateur = () => {
     return stageApi.get(`/formateur/prepare` , { headers});
 }
-
+export const AjouterFormateur = (data) => {
+    return stageApi.post(`/formateur/create`,data , { headers});
+}
+export const getDataAbsences = () => {
+    return stageApi.get(`/absence/all` , {headers});
+}

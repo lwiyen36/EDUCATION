@@ -20,7 +20,7 @@ import {
   Tab,
   TabPanel,
 } from "@material-tailwind/react";
-import { AjouterEtudiant } from "../Admin.service";
+import { AjouterEtudiant, AjouterFormateur } from "../Admin.service";
 
 export function AddForm(props) {
     let {open , handleOpen , setAdd , matieres} = props
@@ -41,7 +41,7 @@ export function AddForm(props) {
 
     useEffect(() => {
         matieres = props.matieres
-    },[matieres])
+    },[])
 
     const validation = () => {
         let validate = true;

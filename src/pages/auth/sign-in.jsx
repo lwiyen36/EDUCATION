@@ -6,7 +6,7 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Login } from "./auth.service";
 
 
@@ -14,11 +14,21 @@ export function SignIn() {
   const [data,setdata]=useState({
     email:'',password:''
   })
+  const navigate=useNavigate()
   function Logine(){
     Login(data).then((data)=>{
       localStorage.setItem('user',JSON.stringify(data.data.user))
       localStorage.setItem('token',JSON.stringify(data.data.token))
-      document.location="/dashboard/home"
+      if(data.data.user.id_role=="1"){
+        navigate('/')
+      }else{
+        if(data.data.userid_role=="2"){
+          navigate('/dashboard/listDesEtudiants')
+         
+        }else{
+          navigate('/dashboard/listDesEtudiants')
+        }
+      }
     }).catch((err)=>{
       alert()
     })

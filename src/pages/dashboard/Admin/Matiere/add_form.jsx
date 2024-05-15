@@ -67,7 +67,7 @@ export function AddForm(props) {
         <DialogHeader className="flex flex-col items-start">
           {" "}
           <Typography className="mb-1" variant="h4">
-            Nouvelle spécialité @{" "}
+            Nouvelle Matière @{" "}
           </Typography>
         </DialogHeader>
         <svg
